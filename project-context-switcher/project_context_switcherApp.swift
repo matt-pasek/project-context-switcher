@@ -10,8 +10,11 @@ import SwiftUI
 @main
 struct project_context_switcherApp: App {
     var body: some Scene {
-        WindowGroup {
+        MenuBarExtra {
             ContentView()
+        } label: {
+            Image(systemName: "folder.badge.gearshape")
         }
+        .menuBarExtraStyle(.menu)
     }
 }
