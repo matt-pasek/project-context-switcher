@@ -11,7 +11,7 @@ import SwiftUI
 struct project_context_switcherApp: App {
     var body: some Scene {
         MenuBarExtra {
-            ContentView()
+            MenuBarView()
         } label: {
             Image(systemName: "folder.badge.gearshape")
         }
