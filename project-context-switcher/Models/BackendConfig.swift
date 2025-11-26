@@ -15,6 +15,19 @@ struct BackendConfig: ProjectComponentConfig {
     var devCommand: String
     var autoInstallDeps: Bool
     var autoFetchChanges: Bool
+    var devPort: Int
     
     var javaVersion: String?
+    
+    init(label: String, path: String, ideApp: String? = nil, devCommand: String, autoInstallDeps: Bool, autoFetchChanges: Bool, javaVersion: String? = nil, devPort: Int) {
+        self.id = UUID()
+        self.label = label
+        self.path = path
+        self.ideApp = ideApp
+        self.devCommand = devCommand
+        self.autoInstallDeps = autoInstallDeps
+        self.autoFetchChanges = autoFetchChanges
+        self.javaVersion = javaVersion
+        self.devPort = devPort
+    }
 }

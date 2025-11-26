@@ -15,4 +15,5 @@ protocol ProjectComponentConfig: Codable, Identifiable {
     var devCommand: String { get set }
     var autoInstallDeps: Bool { get set }
     var autoFetchChanges: Bool { get set }
+    var devPort: Int { get set }
 }
