@@ -11,6 +11,10 @@ import Foundation
     var currentRunning: Project?
     var projects: [Project] = []
     
+    init() {
+        self.projects = Persistence.loadProjects()
+    }
+    
     func addProject(_ project: Project) {
         projects.append(project)
     }
@@ -32,9 +36,9 @@ import Foundation
         guard let current = currentRunning else { return }
         
         // lets pretend this is stopping logic
-        updateProjectStatus(currentRunning!, status: .stopping)
+        updateProjectStatus(current, status: .stopping)
         // TODO: actually stop the project
-        updateProjectStatus(currentRunning!, status: .idle)
+        updateProjectStatus(current, status: .idle)
 
         currentRunning = nil
     }
