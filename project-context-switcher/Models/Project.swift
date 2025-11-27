@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum ProjectStatus: Equatable {
+enum ProjectStatus: Equatable, Codable {
     case idle
     case starting
     case running
@@ -16,7 +16,7 @@ enum ProjectStatus: Equatable {
     case error(message: String)
 }
 
-@Observable class Project: Identifiable {
+@Observable class Project: Identifiable, Codable {
     var id = UUID()
     var name: String
     var frontendConfig: [FrontendConfig] = []
@@ -25,8 +25,36 @@ enum ProjectStatus: Equatable {
     var links: [String] = []
     var status: ProjectStatus = .idle
     
+    enum CodingKeys: String, CodingKey {
+        case id, name, frontendConfig, backendConfig, dockerConfig, links, status
+    }
+    
     init(name: String) {
         self.name = name
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        frontendConfig = try container.decode([FrontendConfig].self, forKey: .frontendConfig)
+        backendConfig = try container.decode([BackendConfig].self, forKey: .backendConfig)
+        dockerConfig = try container.decodeIfPresent(DockerConfig.self, forKey: .dockerConfig)
+        links = try container.decode([String].self, forKey: .links)
+        status = try container.decode(ProjectStatus.self, forKey: .status)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(frontendConfig, forKey: .frontendConfig)
+        try container.encode(backendConfig, forKey: .backendConfig)
+        try container.encodeIfPresent(dockerConfig, forKey: .dockerConfig)
+        try container.encode(links, forKey: .links)
+        try container.encode(status, forKey: .status)
     }
 }
 
