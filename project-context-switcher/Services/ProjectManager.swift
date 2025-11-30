@@ -9,7 +9,11 @@ import Foundation
 
 @Observable class ProjectManager {
     var currentRunning: Project?
-    var projects: [Project] = []
+    var projects: [Project] = [] {
+        didSet {
+            Persistence.saveProjects(projects)
+        }
+    }
     
     init() {
         self.projects = Persistence.loadProjects()
@@ -30,6 +34,7 @@ import Foundation
     
     func updateProjectStatus(_ project: Project, status: ProjectStatus) {
         project.status = status
+        Persistence.saveProjects(projects)
     }
     
     func stopCurrentProject() {
